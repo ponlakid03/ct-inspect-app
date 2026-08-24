@@ -105,13 +105,15 @@ body{font-family:Arial,Helvetica,sans-serif;background:#eef0f3;color:var(--text)
 .disc{background:var(--amberbg);border-left:4px solid var(--amber);color:var(--amber);font-size:12.5px;padding:8px 12px;border-radius:0 4px 4px 0;margin-bottom:16px;line-height:1.55;}
 
 /* STEPS */
-.steps{display:flex;overflow-x:auto;margin-bottom:14px;-ms-overflow-style:none;scrollbar-width:none;}
+.steps{display:flex;overflow-x:auto;margin-bottom:14px;-ms-overflow-style:none;scrollbar-width:none;align-items:stretch;}
 .steps::-webkit-scrollbar{display:none;}
-.step{flex:1;min-width:50px;text-align:center;padding:6px 3px;font-size:10px;font-weight:700;color:var(--muted);border-bottom:3px solid var(--border);cursor:pointer;white-space:nowrap;transition:all .15s;}
+.step{flex:0 0 auto;text-align:center;padding:6px 4px;font-size:9px;font-weight:700;color:var(--muted);border-bottom:3px solid var(--border);cursor:pointer;transition:all .15s;min-width:32px;}
 .step .sn{display:block;font-size:13px;font-weight:800;margin-bottom:1px;}
-.step.active{color:var(--blue);border-color:var(--blue);}
+.step .sl{display:none;font-size:9px;white-space:nowrap;}
+.step.active{flex:0 0 auto;color:var(--blue);border-color:var(--blue);}
+.step.active .sl{display:block;}
 .step.done{color:var(--green);border-color:var(--green);}
-.step.skip{color:#bbb;border-color:#e0e0e0;}
+.step.skip{color:#bbb;border-color:#e0e0e0;opacity:0.5;}
 
 /* SECTION HEADER */
 .sec{color:var(--blue);font-weight:700;font-size:12.5px;letter-spacing:.5px;text-transform:uppercase;margin:20px 0 10px;display:flex;align-items:center;gap:6px;}
@@ -263,6 +265,16 @@ footer a{color:var(--blue);text-decoration:none;}
   .rph-grid img{width:130px;height:96px;}
   .rt th{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
 }
+
+/* MOBILE: Prevent iOS auto-zoom (inputs must be ≥16px) */
+@media(max-width:768px){
+  .f input,.f select,.f textarea,.sow-inp,.pm-form input{font-size:16px!important;}
+}
+/* TOUCH TARGETS: Minimum 44px for key buttons */
+.btn-p,.btn-s,.btn-r{min-height:44px;}
+.ph-btn{min-height:48px;font-size:13px;}
+.pm-del{min-height:36px;min-width:36px;font-size:18px;}
+.ch-btn{min-height:36px;}
 </style>
 </head>
 <body>
@@ -329,13 +341,13 @@ footer a{color:var(--blue);text-decoration:none;}
       <div class="f">
         <label>Rep Logo <span style="font-weight:400;color:var(--muted)">(optional)</span></label>
         <div class="file-up"><button class="ch-btn" onclick="tr('logoIn')">Choose File</button><span class="file-nm" id="logoNm">No file chosen</span></div>
-        <input class="fi" type="file" id="logoIn" accept="image/*" onchange="single(this,'logoNm','logoPv')">
+        <input class="fi" type="file" id="logoIn" accept="image/*" capture="environment" onchange="single(this,'logoNm','logoPv')">
         <div id="logoPv"></div>
       </div>
       <div class="f">
         <label>Rep Photo <span style="font-weight:400;color:var(--muted)">(optional)</span></label>
         <div class="file-up"><button class="ch-btn" onclick="tr('repIn')">Choose File</button><span class="file-nm" id="repNm">No file chosen</span></div>
-        <input class="fi" type="file" id="repIn" accept="image/*" onchange="single(this,'repNm','repPv')">
+        <input class="fi" type="file" id="repIn" accept="image/*" capture="environment" onchange="single(this,'repNm','repPv')">
         <div id="repPv"></div>
       </div>
     </div>
@@ -563,39 +575,9 @@ footer a{color:var(--blue);text-decoration:none;}
     </div>
   </div>
 
-  <!-- PAGE 6: INSIDE OF TOWER (conditional) -->
+  <!-- PAGE 6: SUMMARY -->
   <div class="page" id="pg5">
-    <div class="page-title" id="pt5">Page 6 of 7: Inside of Tower</div>
-    <div class="disc">Complete this section for Walk Around + Inside Tower inspections only.</div>
-    <div class="g4" style="margin-bottom:16px">
-      <div class="f"><label>INCLUDE IN REPORT?</label>
-        <select id="f_include"><option value="">— Select —</option><option>Yes</option><option>No</option></select>
-      </div>
-      <div class="f"><label>Inspection Type</label>
-        <select id="f_itype2"><option value="">— Select —</option><option>Walk Around</option><option>Walk Around + Inside Tower</option></select>
-      </div>
-      <div class="f"><label>Speed Reducer Type</label>
-        <select id="f_spred"><option value="">— Select —</option><option>Gearbox</option><option>Belt Drive</option><option>Direct Drive</option><option>VFD Drive</option><option>Other - See Comments</option></select>
-      </div>
-      <div class="f"><label>Tower Type</label>
-        <select id="f_ttype2"><option value="">— Select —</option><option>Counterflow</option><option>Crossflow</option></select>
-      </div>
-    </div>
-    <div class="f">
-      <label>Inside Tower – General Comments</label>
-      <textarea id="f_inside_notes" placeholder="Note internal condition: fill from inside, internal structure, basin condition, spray system coverage, biological growth, water clarity, etc."></textarea>
-    </div>
-    <div class="sec-sub" style="margin-top:14px">Inside Tower Photos</div>
-    <div class="cb-photos" id="inside_photos"></div>
-    <div class="btn-row">
-      <button class="btn-s" onclick="nav(-1)">← Back</button>
-      <button class="btn-p" onclick="nav(1)">Save and Continue</button>
-    </div>
-  </div>
-
-  <!-- PAGE 7: SUMMARY -->
-  <div class="page" id="pg6">
-    <div class="page-title" id="pt6">Page 6 of 6: Summary & Scope of Work</div>
+    <div class="page-title" id="pt5">Page 6 of 6: Summary & Scope of Work</div>
 
     <!-- Pre-report summary -->
     <div class="summary-panel" id="summaryPanel">
@@ -643,7 +625,7 @@ footer a{color:var(--blue);text-decoration:none;}
 </div><!-- /mainForm -->
 </div><!-- /wrap -->
 
-<footer>Copyright 2026 Stolz Asia | <a href="#">Terms of Service</a> | <a href="#">Privacy Policy</a></footer>
+<footer>Copyright ${new Date().getFullYear()} Stolz Asia | <a href="#">Terms of Service</a> | <a href="#">Privacy Policy</a></footer>
 
 <!-- VALIDATION MODAL -->
 <div id="valModal">
@@ -759,22 +741,7 @@ function buildMotorPhotos() {
   c.innerHTML = h;
 }
 
-function buildInsidePhotos() {
-  const c = document.getElementById('inside_photos');
-  if (!c) return;
-  let h = '';
-  for (let i = 0; i < 4; i++) {
-    const pid = `ins_p${i}`;
-    const nextId = i < 3 ? `ins_p${i+1}slot` : '';
-    const hidden = i > 0 ? ' style="display:none"' : '';
-    h += `<div class="ph-slot" id="${pid}slot"${hidden}>
-      <div class="ph-row"><button class="ch-btn ph-btn" onclick="tr('${pid}i')">📷 Photo ${i+1}${i===0?' *':''}</button></div>
-      <input class="fi" type="file" id="${pid}i" accept="image/*" capture="environment" onchange="slot(this,'${pid}v','${nextId}')">
-      <div class="ph-prev" id="${pid}v"></div>
-    </div>`;
-  }
-  c.innerHTML = h;
-}
+
 
 function buildAll() {
   // Page 3 – Structure & Access
@@ -798,7 +765,12 @@ function buildAll() {
 // SCOPE OF WORK (dynamic)
 // ════════════════════════════════════════════
 let sowCount = 0;
-function initSOW() { for (let i = 0; i < 4; i++) addSOW(); }
+function initSOW() {
+  const list = document.getElementById('sowList');
+  if (list) list.innerHTML = '';
+  sowCount = 0;
+  for (let i = 0; i < 4; i++) addSOW();
+}
 function addSOW() {
   sowCount++;
   const n = sowCount;
@@ -818,12 +790,11 @@ function rmSOW(n) {
 // ════════════════════════════════════════════
 let curPage = 0;
 let inspType = '';
-const PAGE_NAMES = ['General Info','Operating Condition','Structure & Access','Mechanical','Fill & Dist.','Inside Tower','Summary'];
-const TOTAL_PAGES = 7;
+const PAGE_NAMES = ['General Info','Operating Condition','Structure & Access','Mechanical','Fill & Dist.','Summary'];
+const TOTAL_PAGES = 6;
 
 function getSeq() {
-  const inside = gv('f_itype') === 'Walk Around + Inside Tower';
-  return inside ? [0,1,2,3,4,5,6] : [0,1,2,3,4,6];
+  return [0,1,2,3,4,5];
 }
 
 function nav(dir) {
@@ -839,9 +810,9 @@ function goTo(pg) {
   curPage = pg;
   document.getElementById('pg'+curPage).classList.add('active');
   updateSteps();
-  if (pg === 6) buildSummary();
+  if (pg === 5) buildSummary();
   window.scrollTo(0,0);
-  autosave();
+  autosave(true);
 }
 
 function buildSteps() {
@@ -849,7 +820,7 @@ function buildSteps() {
   PAGE_NAMES.forEach((n,i) => {
     const d = document.createElement('div');
     d.className = 'step'+(i===0?' active':'');
-    d.innerHTML = `<span class="sn">${i+1}</span>${n}`;
+    d.innerHTML = `<span class="sn">${i+1}</span><span class="sl">${n}</span>`;
     d.onclick = () => { const seq = getSeq(); if (seq.includes(i)) goTo(i); };
     c.appendChild(d);
   });
@@ -867,9 +838,10 @@ function updateSteps() {
   const total = seq.length;
   const el = document.getElementById('pt'+curPage);
   if (el) { const parts = el.textContent.split(':'); el.textContent = `Page ${pos} of ${total}: ${parts.slice(1).join(':').trim()}`; }
+  setTimeout(()=>document.querySelector('.step.active')?.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'}),50);
 }
 
-function onItypeChange() { updateSteps(); }
+function onItypeChange() { /* inspection type no longer controls page sequence */ }
 
 // ════════════════════════════════════════════
 // SUMMARY PANEL
@@ -1002,7 +974,7 @@ function single(inp, nmId, pvId) {
   const f=inp.files[0]; if(!f) return;
   document.getElementById(nmId).textContent=f.name;
   const r=new FileReader();
-  r.onload=e=>{const p=document.getElementById(pvId);p.innerHTML='';const img=document.createElement('img');img.className='img-prev';img.src=e.target.result;p.appendChild(img);};
+  r.onload=e=>{resizeImg(e.target.result,800,(resized)=>{const p=document.getElementById(pvId);p.innerHTML='';const img=document.createElement('img');img.className='img-prev';img.src=resized;p.appendChild(img);savePhotoSlot(pvId,resized);});};
   r.readAsDataURL(f);
 }
 function multi(inp, pvId, nmId) {
@@ -1019,16 +991,69 @@ function slot(inp, pvId, nextSlotId) {
   const f=inp.files[0]; if(!f) return;
   const r=new FileReader();
   r.onload=e=>{
-    const pv=document.getElementById(pvId); pv.innerHTML='';
-    const w=document.createElement('div'); w.className='pthumb';
-    const img=document.createElement('img'); img.src=e.target.result;
-    const rm=document.createElement('button'); rm.className='prm'; rm.innerHTML='✕';
-    rm.onclick=()=>w.remove();
-    w.appendChild(img); w.appendChild(rm); pv.appendChild(w);
-    if(nextSlotId){const ns=document.getElementById(nextSlotId);if(ns)ns.style.display='';}
+    resizeImg(e.target.result, 1024, (resized)=>{
+      const pv=document.getElementById(pvId); pv.innerHTML='';
+      const w=document.createElement('div'); w.className='pthumb';
+      const img=document.createElement('img'); img.src=resized;
+      const rm=document.createElement('button'); rm.className='prm'; rm.innerHTML='✕';
+      rm.onclick=()=>{ w.remove(); savePhotoSlot(pvId,''); };
+      w.appendChild(img); w.appendChild(rm); pv.appendChild(w);
+      savePhotoSlot(pvId, resized);
+      if(nextSlotId){const ns=document.getElementById(nextSlotId);if(ns)ns.style.display='';}
+    });
   };
   r.readAsDataURL(f);
   inp.value='';
+}
+
+// ════════════════════════════════════════════
+// PHOTO PERSISTENCE
+// ════════════════════════════════════════════
+function resizeImg(dataUrl, maxPx, cb) {
+  const img = new Image();
+  img.onload = () => {
+    const scale = Math.min(1, maxPx / Math.max(img.width, img.height, 1));
+    const w = Math.round(img.width * scale);
+    const h = Math.round(img.height * scale);
+    const c = document.createElement('canvas');
+    c.width = w; c.height = h;
+    c.getContext('2d').drawImage(img, 0, 0, w, h);
+    cb(c.toDataURL('image/jpeg', 0.72));
+  };
+  img.src = dataUrl;
+}
+function savePhotoSlot(slotKey, dataUrl) {
+  if (!currentProjectId) return;
+  const key = 'ctapp_photo_'+currentProjectId+'_'+slotKey;
+  try {
+    if (dataUrl) localStorage.setItem(key, dataUrl);
+    else localStorage.removeItem(key);
+  } catch(e) { /* storage full — ignore */ }
+}
+function loadPhotos() {
+  if (!currentProjectId) return;
+  const prefix = 'ctapp_photo_'+currentProjectId+'_';
+  const keys = [];
+  for (let i = 0; i < localStorage.length; i++) { const k=localStorage.key(i); if(k&&k.startsWith(prefix)) keys.push(k); }
+  keys.forEach(k => {
+    const slotKey = k.slice(prefix.length);
+    const dataUrl = localStorage.getItem(k);
+    if (!dataUrl) return;
+    const el = document.getElementById(slotKey);
+    if (!el) return;
+    el.innerHTML = '';
+    if (slotKey==='logoPv'||slotKey==='repPv') {
+      const img=document.createElement('img'); img.className='img-prev'; img.src=dataUrl; el.appendChild(img);
+    } else {
+      const w=document.createElement('div'); w.className='pthumb';
+      const img=document.createElement('img'); img.src=dataUrl;
+      const rm=document.createElement('button'); rm.className='prm'; rm.innerHTML='✕';
+      rm.onclick=()=>{ w.remove(); savePhotoSlot(slotKey,''); };
+      w.appendChild(img); w.appendChild(rm); el.appendChild(w);
+      const m=slotKey.match(/^(.+)_p(\d)v$/);
+      if(m&&parseInt(m[2])<3){const ns=document.getElementById(m[1]+'_p'+(parseInt(m[2])+1)+'slot');if(ns)ns.style.display='';}
+    }
+  });
 }
 
 // ════════════════════════════════════════════
@@ -1045,12 +1070,11 @@ function getFields() {
     'f_hwt','f_cwt','f_wbt','f_flow','f_range','f_approach',
     'f_ph','f_cond','f_clarity','f_scaling','f_corrosion','f_bio',
     'f_co','f_coc','f_coe','f_tname','f_loc','f_proc',
-    'f_include','f_itype2','f_spred','f_ttype2','f_inside_notes',
+
     'f_overall','f_urgency','f_nextinsp','f_quote','f_remarks','f_sig','f_custsig','f_sigdate',
     'm_mfr','m_hp','m_rpm','m_phase','m_hz','m_volts','m_fla','m_info','m_grease','m_lubdate',
     'm_noise','m_noise_rec','m_vib','m_vib_rec','m_heat','m_heat_rec',
     'mtr_p0c','mtr_p1c','mtr_p2c','mtr_p3c',
-    'ins_p0c','ins_p1c','ins_p2c','ins_p3c',
   ];
   // Component fields
   COMPS.forEach(c => {
@@ -1064,7 +1088,7 @@ function getFields() {
   return base;
 }
 
-function autosave() {
+function autosave(silent=false) {
   if (!currentProjectId) return;
   const data={fields:{},itype:inspType,page:curPage};
   getFields().forEach(id=>{const v=gv(id);if(v)data.fields[id]=v;});
@@ -1074,7 +1098,7 @@ function autosave() {
   const projs = getProjIndex();
   const p = projs.find(x=>x.id===currentProjectId);
   if (p) { p.modified = today; saveProjIndex(projs); }
-  showToast('Saved ✓');
+  if(!silent) showToast('Saved ✓');
 }
 
 function loadSaved() {
@@ -1084,7 +1108,7 @@ function loadSaved() {
     const data=JSON.parse(raw);
     if(data.fields) Object.entries(data.fields).forEach(([k,v])=>sv(k,v));
     // Refresh calculated fields after load
-    calcDesign(); calcActual(); updateCompare(); calcAge();
+    calcDesign(); calcActual(); updateCompare(); calcAge(); loadPhotos();
   } catch(e){}
 }
 
@@ -1093,7 +1117,7 @@ function showToast(msg) {
   setTimeout(()=>t.classList.remove('show'),1800);
 }
 
-setInterval(autosave,12000);
+setInterval(()=>autosave(true),12000);
 
 // ════════════════════════════════════════════
 // REPORT GENERATION
@@ -1135,7 +1159,7 @@ function openReport() {
   });
   // SOW
   let sow='';
-  document.querySelectorAll('[id^="sow"]').forEach((e,i)=>{ if(e.tagName==='INPUT'&&e.value.trim()) sow+=`<div style="margin-bottom:4px;font-size:13px"><b>${i+1}.</b> ${e.value.trim()}</div>`; });
+  let _sowN=0; document.querySelectorAll('input.sow-inp').forEach(e=>{ if(e.value.trim()){ _sowN++; sow+=`<div style="margin-bottom:4px;font-size:13px"><b>${_sowN}.</b> ${e.value.trim()}</div>`; } });
   // PHOTOS – collect all component photos, motor, and inside tower
   let photoHTML = '';
   COMPS.forEach(c => {
@@ -1143,7 +1167,13 @@ function openReport() {
     photoHTML += buildPhotoSection(c.title, photos);
   });
   photoHTML += buildPhotoSection('MOTOR', getPhotos('mtr'));
-  photoHTML += buildPhotoSection('INSIDE TOWER', getPhotos('ins'));
+  // Static photos: Overall Tower, Rep Logo, Rep Photo
+  const twrPv = document.getElementById('twrPv');
+  if (twrPv) { const tphotos=[...twrPv.querySelectorAll('img')].filter(i=>i.src.startsWith('data:')).map(i=>i.src); photoHTML += buildPhotoSection('OVERALL TOWER', tphotos); }
+  const logoPv = document.getElementById('logoPv');
+  if (logoPv) { const li=logoPv.querySelector('img'); if(li&&li.src.startsWith('data:')) photoHTML += buildPhotoSection('REP LOGO', [li.src]); }
+  const repPv = document.getElementById('repPv');
+  if (repPv) { const ri=repPv.querySelector('img'); if(ri&&ri.src.startsWith('data:')) photoHTML += buildPhotoSection('REPRESENTATIVE PHOTO', [ri.src]); }
   const photoSection = photoHTML ? `<div class="rs"><div class="rs-t">Inspection Photos</div><div class="rph-section">${photoHTML}</div></div>` : '';
   // Overall color
   const oCol={Excellent:'#1e8449',Good:'#27ae60',Fair:'#d35400',Poor:'#c0392b',Critical:'#7b241c'}[gv('f_overall')]||'#333';
@@ -1215,15 +1245,6 @@ function openReport() {
 
     ${photoSection}
 
-    ${gv('f_itype')==='Walk Around + Inside Tower' ? `<div class="rs"><div class="rs-t">Inside of Tower</div>
-      <div class="rg">
-        <div class="rf"><label>Include in Report</label><p>${gv('f_include')||'—'}</p></div>
-        <div class="rf"><label>Speed Reducer Type</label><p>${gv('f_spred')||'—'}</p></div>
-        <div class="rf"><label>Tower Type (Inside)</label><p>${gv('f_ttype2')||'—'}</p></div>
-      </div>
-      ${gv('f_inside_notes')?`<div style="margin-top:8px"><label style="font-size:11px;color:var(--muted)">General Comments</label><p style="font-size:13px;white-space:pre-line">${gv('f_inside_notes')}</p></div>`:''}
-    </div>` : ''}
-
     ${sow ? `<div class="rs"><div class="rs-t">Recommended Scope of Work</div>${sow}</div>` : ''}
 
     <div class="rs">
@@ -1248,7 +1269,7 @@ function openReport() {
 
     <p style="font-size:11px;color:#bbb;text-align:center;margin-top:14px">
       Generated: ${new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'long',year:'numeric'})} &nbsp;|&nbsp;
-      Copyright 2026 Stolz Asia
+      Copyright ${new Date().getFullYear()} Stolz Asia
     </p>`;
 
   document.getElementById('r_sub').textContent = 'Stolz Asia — '+(inspType==='FAP'?'Field Assessment Program (FAP)':'Field Evaluation Program (FEP)');
@@ -1349,7 +1370,7 @@ function updateCompare() {
 }
 function calcAge() {
   const yr = parseInt(gv('f_year'));
-  sv('f_age', (!isNaN(yr)&&yr>1970) ? (2026-yr)+' years' : '');
+  sv('f_age', (!isNaN(yr)&&yr>1970) ? (new Date().getFullYear()-yr)+' years' : '');
 }
 
 // ════════════════════════════════════════════
@@ -1359,6 +1380,10 @@ function start(type) {
   inspType = type;
   document.getElementById('landing').style.display = 'none';
   document.getElementById('mainForm').style.display = 'block';
+  // Reset page navigation (prevent cross-project leakage)
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('pg0').classList.add('active');
+  curPage = 0;
   // Show current project name in topbar
   const projs = getProjIndex();
   const proj = projs.find(p=>p.id===currentProjectId);
@@ -1366,6 +1391,20 @@ function start(type) {
   if (titleEl && proj) titleEl.textContent = proj.name + ' (' + type + ')';
   buildSteps();
   buildAll();
+  // Clear static fields before loading saved data
+  ['f_rname','f_date','f_insp','f_phone','f_email','f_tgrp','f_ttype','f_tmat','f_itype',
+   'f_make','f_model','f_serial','f_cells','f_year','f_age','f_drivetype','f_cap',
+   'f_dflow','f_dhwt','f_dcwt','f_dwbt','f_drange','f_dapproach',
+   'f_hwt','f_cwt','f_wbt','f_flow','f_range','f_approach',
+   'f_ph','f_cond','f_clarity','f_scaling','f_corrosion','f_bio',
+   'f_co','f_coc','f_coe','f_tname','f_loc','f_proc','f_include','f_itype2',
+   'f_spred','f_ttype2','f_inside_notes','f_overall','f_urgency','f_nextinsp',
+   'f_quote','f_remarks','f_sig','f_custsig','f_sigdate',
+   'm_mfr','m_hp','m_rpm','m_phase','m_hz','m_volts','m_fla','m_info',
+   'm_grease','m_lubdate','m_noise','m_noise_rec','m_vib','m_vib_rec','m_heat','m_heat_rec'
+  ].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  ['logoPv','repPv','twrPv'].forEach(id=>{const e=document.getElementById(id);if(e)e.innerHTML='';});
+  ['logoNm','repNm','twrNm'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent='No file chosen';});
   loadSaved();
   const today = new Date().toISOString().split('T')[0];
   if (!gv('f_date'))    sv('f_date', today);
