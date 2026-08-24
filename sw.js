@@ -1,8 +1,10 @@
 // CT Inspection App — Service Worker
 // Caches all app files for full offline use
 
-const CACHE = 'ct-inspect-v1';
+const CACHE = 'ct-inspect-v2';
 const ASSETS = [
+  './',
+  './index.html',
   './CT_Site_Survey_App.html',
   './manifest.json',
   './icon-192.png',
