@@ -1,0 +1,29 @@
+{
+  "name": "CT Inspection Report",
+  "short_name": "CT Inspect",
+  "description": "Stolz Asia Cooling Tower Site Survey Inspection Report Tool",
+  "start_url": "./CT_Site_Survey_App.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#003087",
+  "theme_color": "#003087",
+  "lang": "en",
+  "categories": ["business", "utilities"],
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "prefer_related_applications": false
+}
