@@ -109,8 +109,10 @@ body{font-family:Arial,Helvetica,sans-serif;background:#eef0f3;color:var(--text)
 .steps::-webkit-scrollbar{display:none;}
 .step{flex:0 0 auto;text-align:center;padding:6px 4px;font-size:9px;font-weight:700;color:var(--muted);border-bottom:3px solid var(--border);cursor:pointer;transition:all .15s;min-width:32px;}
 .step .sn{display:block;font-size:13px;font-weight:800;margin-bottom:1px;}
+.step .ss{display:block;font-size:9px;white-space:nowrap;}
 .step .sl{display:none;font-size:9px;white-space:nowrap;}
 .step.active{flex:0 0 auto;color:var(--blue);border-color:var(--blue);}
+.step.active .ss{display:none;}
 .step.active .sl{display:block;}
 .step.done{color:var(--green);border-color:var(--green);}
 .step.skip{color:#bbb;border-color:#e0e0e0;opacity:0.5;}
@@ -275,6 +277,15 @@ footer a{color:var(--blue);text-decoration:none;}
 .ph-btn{min-height:48px;font-size:13px;}
 .pm-del{min-height:36px;min-width:36px;font-size:18px;}
 .ch-btn{min-height:36px;}
+
+/* TWO-BUTTON PHOTO ROW: Take Photo / Upload */
+.ph-lbl{font-size:11px;font-weight:700;display:block;margin-bottom:3px;}
+.ph-row2{display:flex;gap:6px;margin-bottom:4px;}
+.ph-btn-cam,.ph-btn-up{flex:1;border-radius:6px;padding:8px 4px;font-size:11px;font-weight:700;cursor:pointer;min-height:44px;white-space:nowrap;}
+.ph-btn-cam{background:var(--blue);color:#fff;border:none;}
+.ph-btn-cam:hover,.ph-btn-cam:active{background:#00236a;}
+.ph-btn-up{background:var(--white);color:var(--blue);border:2px solid var(--blue);}
+.ph-btn-up:hover,.ph-btn-up:active{background:var(--blight);}
 </style>
 </head>
 <body>
@@ -340,14 +351,24 @@ footer a{color:var(--blue);text-decoration:none;}
       <div class="f"><label>Report Name</label><input type="text" id="f_rname" placeholder="e.g. CT-2026-001"></div>
       <div class="f">
         <label>Rep Logo <span style="font-weight:400;color:var(--muted)">(optional)</span></label>
-        <div class="file-up"><button class="ch-btn" onclick="tr('logoIn')">Choose File</button><span class="file-nm" id="logoNm">No file chosen</span></div>
-        <input class="fi" type="file" id="logoIn" accept="image/*" capture="environment" onchange="single(this,'logoNm','logoPv')">
+        <div class="ph-row2">
+          <button class="ph-btn-cam" onclick="tr('logoIncam')">📷 Take Photo</button>
+          <button class="ph-btn-up" onclick="tr('logoInup')">🖼 Upload</button>
+        </div>
+        <span class="file-nm" id="logoNm">No file chosen</span>
+        <input class="fi" type="file" id="logoIncam" accept="image/*" capture="environment" onchange="single(this,'logoNm','logoPv')">
+        <input class="fi" type="file" id="logoInup" accept="image/*" onchange="single(this,'logoNm','logoPv')">
         <div id="logoPv"></div>
       </div>
       <div class="f">
         <label>Rep Photo <span style="font-weight:400;color:var(--muted)">(optional)</span></label>
-        <div class="file-up"><button class="ch-btn" onclick="tr('repIn')">Choose File</button><span class="file-nm" id="repNm">No file chosen</span></div>
-        <input class="fi" type="file" id="repIn" accept="image/*" capture="environment" onchange="single(this,'repNm','repPv')">
+        <div class="ph-row2">
+          <button class="ph-btn-cam" onclick="tr('repIncam')">📷 Take Photo</button>
+          <button class="ph-btn-up" onclick="tr('repInup')">🖼 Upload</button>
+        </div>
+        <span class="file-nm" id="repNm">No file chosen</span>
+        <input class="fi" type="file" id="repIncam" accept="image/*" capture="environment" onchange="single(this,'repNm','repPv')">
+        <input class="fi" type="file" id="repInup" accept="image/*" onchange="single(this,'repNm','repPv')">
         <div id="repPv"></div>
       </div>
     </div>
@@ -411,8 +432,13 @@ footer a{color:var(--blue);text-decoration:none;}
       <div class="f"><label>Process Served By Tower</label><input type="text" id="f_proc" placeholder="e.g. Chiller No. 1–3"></div>
       <div class="f">
         <label>Overall Tower Photo</label>
-        <div class="file-up"><button class="ch-btn" onclick="tr('twrIn')">Choose File</button><span class="file-nm" id="twrNm">No file chosen</span></div>
-        <input class="fi" type="file" id="twrIn" accept="image/*" capture="environment" multiple onchange="multi(this,'twrPv','twrNm')">
+        <div class="ph-row2">
+          <button class="ph-btn-cam" onclick="tr('twrIncam')">📷 Take Photo</button>
+          <button class="ph-btn-up" onclick="tr('twrInup')">🖼 Upload</button>
+        </div>
+        <span class="file-nm" id="twrNm">No file chosen</span>
+        <input class="fi" type="file" id="twrIncam" accept="image/*" capture="environment" onchange="multi(this,'twrPv','twrNm')">
+        <input class="fi" type="file" id="twrInup" accept="image/*" multiple onchange="multi(this,'twrPv','twrNm')">
         <div class="ph-prev" id="twrPv"></div>
       </div>
     </div>
@@ -704,8 +730,13 @@ function buildComp(containerId, cfg) {
     const nextId = i < 3 ? `${cfg.id}_p${i+1}slot` : '';
     const hidden = i > 0 ? ' style="display:none"' : '';
     photos += `<div class="ph-slot" id="${pid}slot"${hidden}>
-      <div class="ph-row"><button class="ch-btn ph-btn" onclick="tr('${pid}i')">📷 Photo ${i+1}${i===0?' *':''}</button></div>
-      <input class="fi" type="file" id="${pid}i" accept="image/*" capture="environment" onchange="slot(this,'${pid}v','${nextId}')">
+      <label class="ph-lbl">Photo ${i+1}${i===0?' *':''}</label>
+      <div class="ph-row2">
+        <button class="ph-btn-cam" onclick="tr('${pid}icam')">📷 Take Photo</button>
+        <button class="ph-btn-up" onclick="tr('${pid}iup')">🖼 Upload</button>
+      </div>
+      <input class="fi" type="file" id="${pid}icam" accept="image/*" capture="environment" onchange="slot(this,'${pid}v','${nextId}')">
+      <input class="fi" type="file" id="${pid}iup" accept="image/*" onchange="slot(this,'${pid}v','${nextId}')">
       <div class="ph-prev" id="${pid}v"></div>
     </div>`;
   }
@@ -733,8 +764,13 @@ function buildMotorPhotos() {
     const nextId = i < 3 ? `mtr_p${i+1}slot` : '';
     const hidden = i > 0 ? ' style="display:none"' : '';
     h += `<div class="ph-slot" id="${pid}slot"${hidden}>
-      <div class="ph-row"><button class="ch-btn ph-btn" onclick="tr('${pid}i')">📷 Photo ${i+1}${i===0?' *':''}</button></div>
-      <input class="fi" type="file" id="${pid}i" accept="image/*" capture="environment" onchange="slot(this,'${pid}v','${nextId}')">
+      <label class="ph-lbl">Photo ${i+1}${i===0?' *':''}</label>
+      <div class="ph-row2">
+        <button class="ph-btn-cam" onclick="tr('${pid}icam')">📷 Take Photo</button>
+        <button class="ph-btn-up" onclick="tr('${pid}iup')">🖼 Upload</button>
+      </div>
+      <input class="fi" type="file" id="${pid}icam" accept="image/*" capture="environment" onchange="slot(this,'${pid}v','${nextId}')">
+      <input class="fi" type="file" id="${pid}iup" accept="image/*" onchange="slot(this,'${pid}v','${nextId}')">
       <div class="ph-prev" id="${pid}v"></div>
     </div>`;
   }
@@ -791,6 +827,7 @@ function rmSOW(n) {
 let curPage = 0;
 let inspType = '';
 const PAGE_NAMES = ['General Info','Operating Condition','Structure & Access','Mechanical','Fill & Dist.','Summary'];
+const PAGE_SHORT = ['Info.','Cond.','Structure.','Mech.','Infill','Sum.'];
 const TOTAL_PAGES = 6;
 
 function getSeq() {
@@ -820,7 +857,7 @@ function buildSteps() {
   PAGE_NAMES.forEach((n,i) => {
     const d = document.createElement('div');
     d.className = 'step'+(i===0?' active':'');
-    d.innerHTML = `<span class="sn">${i+1}</span><span class="sl">${n}</span>`;
+    d.innerHTML = `<span class="sn">${i+1}</span><span class="ss">${PAGE_SHORT[i]}</span><span class="sl">${n}</span>`;
     d.onclick = () => { const seq = getSeq(); if (seq.includes(i)) goTo(i); };
     c.appendChild(d);
   });
